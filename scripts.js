@@ -10,34 +10,76 @@ function computerPlay() {
     }
 }
 
+function capitalize(string) {
+    lowerString = string.toLowerCase();
+    outString = lowerString[0].toUpperCase() + lowerString.slice(1);
+    return outString;
+}
+
 function playRound(computerSelection, playerSelection) {
     switch(computerSelection.toLowerCase()) {
         case "rock":
             switch(playerSelection.toLowerCase()) {
                 case "rock":
-                    return "No one wins, you both choose Rock";
+                    return "tie";
                 case "paper":
-                    return "You win! Paper beats Rock";
+                    return "win";
                 case "scissors":
-                    return "You lose! Rock beats Sciccors";
+                    return "lose";
             }
         case "paper":
             switch(playerSelection.toLowerCase()) {
                 case "rock":
-                    return "You lose! Paper beats Rock";
+                    return "lose";
                 case "paper":
-                    return "No one wins, you both choose Paper";
+                    return "tie";
                 case "scissors":
-                    return "You win! Scissors beats Paper";
+                    return "win";
             }
         case "scissors":
             switch(playerSelection.toLowerCase()) {
                 case "rock":
-                    return "You win! Rock beats Scissors";
+                    return "win";
                 case "paper":
-                    return "You lose! Scissors beats Paper";
+                    return "lose";
                 case "scissors":
-                    return "No one wins, you both choose Scissors";
+                    return "tie";
             }
+    }
+}
+
+function game() {
+    let options = ["rock", "paper", "scissors"];
+    let user_in;
+    let computerScore = 0;
+    let playerScore = 0;
+    for(let i = 0; i < 5; i++) {
+        let computerSelection = computerPlay();
+        while(true){
+            user_in = prompt("Please enter Rock, Paper, or Scissors:");
+            if(options.indexOf(user_in.toLowerCase()) == -1) {
+                alert("Sorry that is incorrect, try again.");
+                continue;
+            } else {
+                break;
+            }
+        }
+        let result = playRound(computerSelection, user_in);
+        if(result == "lose") {
+            computerScore++;
+            alert(`You lose! ${computerSelection} beats ${capitalize(user_in)}`);
+        } else if(result == "win") {
+            playerScore++;
+            alert(`You win! ${capitalize(user_in)} beats ${computerSelection}`);
+        } else {
+            alert(`No one wins, you both choose ${computerSelection}`);
+        }
+    }
+    if(computerScore > playerScore) {
+        alert(`Sorry you lose, the computer got a score of ${computerScore} while you only had ${playerScore}`);
+    } else if(playerScore > computerScore) {
+        alert(`You win! With a score of ${playerScore} the computer only had ${computerScore}`)
+    } else {
+        alert("You both tied...")
     }
 }
