@@ -1,0 +1,45 @@
+html {
+    font-family: sans-serif;
+}
+
+body {
+    margin-top: 20px;
+}
+
+h1 {
+    font-size: 30px;
+    margin: auto;
+    text-align: center;
+}
+
+.button {
+    font-size: 20px;
+    margin: 20px;
+    padding: 0px 20px;
+}
+
+
+#text-output {
+    font-size: 23px;
+    margin-top: 40px;
+    margin-bottom: 80px;
+}
+
+#text-input {
+    font-size: 17px;
+    border: 1px solid #888;
+    padding: 6px 12px;
+    border-radius: 5px;
+}
+
+#game-area {
+    border: 1px solid lightgray;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 600px;
+    margin: 30px auto;
+    border-radius: 7px;
+    box-shadow: -1px 4px 8px 1px #b5b5b5;
+}
