@@ -18,6 +18,14 @@ h1 {
     padding: 0px 20px;
 }
 
+.score-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    margin: 30px;
+}
+
 
 #text-output {
     font-size: 23px;

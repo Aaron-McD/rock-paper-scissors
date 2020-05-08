@@ -1,3 +1,56 @@
+const textInput = document.querySelector('#text-input');
+const startGame = document.querySelector('#start-game');
+const textOutput = document.querySelector('#text-output');
+const gameArea = document.querySelector('#game-area');
+
+const paperButton = document.createElement('button');
+const rockButton = document.createElement('button');
+const scissorsButton = document.createElement('button');
+const buttonContainer = document.createElement('div');
+
+const playScoreDisplay = document.createElement('h3');
+const compScoreDisplay = document.createElement('h3');
+const roundTracker = document.createElement('h3');
+const scoreContainer = document.createElement('div');
+
+let rounds = 0;
+let currentRound = 0;
+let playerScore = 0;
+let computerScore = 0;
+
+scoreContainer.appendChild(playScoreDisplay);
+scoreContainer.appendChild(compScoreDisplay);
+scoreContainer.setAttribute('class', 'score-container');
+
+paperButton.textContent = 'Paper';
+rockButton.textContent = 'Rock';
+scissorsButton.textContent = 'Scissors';
+paperButton.setAttribute('class', 'button')
+rockButton.setAttribute('class', 'button')
+scissorsButton.setAttribute('class', 'button')
+buttonContainer.appendChild(rockButton);
+buttonContainer.appendChild(paperButton);
+buttonContainer.appendChild(scissorsButton);
+
+
+paperButton.addEventListener('click', (e) => {
+    playChoice(e)
+});
+
+rockButton.addEventListener('click', (e) => {
+    playChoice(e)
+});
+
+scissorsButton.addEventListener('click', (e) => {
+    playChoice(e)
+});
+
+function updateUI() {
+    roundTracker.textContent = `Round: ${currentRound} / ${rounds}`;
+    playScoreDisplay.textContent = `Current Score: ${playerScore}`;
+    compScoreDisplay.textContent = `Computer's Score: ${computerScore}`;
+}
+
 function computerPlay() {
     let selection = Math.ceil(Math.random() * 3);
     switch(selection){
@@ -47,6 +100,50 @@ function playRound(computerSelection, playerSelection) {
             }
     }
 }
+
+function playChoice(e) {
+    let choice = e.target.textContent;
+    let computerChoice = computerPlay();
+    let results = playRound(computerChoice, choice);
+    if(results == "lose") {
+        computerScore++;
+        textOutput.textContent = `You lose! ${computerChoice} beats ${choice}`;
+    } else if(results == "win") {
+        playerScore++;
+        textOutput.textContent = `You win! ${choice} beats ${computerChoice}`;
+    } else {
+        textOutput.textContent = `No one wins, you both choose ${computerChoice}`;
+    }
+    if(currentRound != rounds) {
+        currentRound++;
+        updateUI();
+    } else {
+        endGame();
+    }
+}
+
+function prepareGame() {
+    if(parseInt(textInput.value) !== parseInt(textInput.value)){
+        alert('Please enter a number into the text field.')
+        return;
+    } else {
+        rounds = parseInt(textInput.value);
+        currentRound = 1;
+        playerScore = 0;
+        computerScore = 0;
+        updateUI();
+        gameArea.removeChild(textInput);
+        gameArea.removeChild(startGame);
+        gameArea.appendChild(roundTracker);
+        gameArea.appendChild(scoreContainer);
+        gameArea.appendChild(buttonContainer);
+        textOutput.textContent = "Rock, Paper or Scissors?";
+    }
+}
+
+startGame.addEventListener('click', () => {
+    prepareGame(); 
+});
 
 function game() {
     let options = ["rock", "paper", "scissors"];
