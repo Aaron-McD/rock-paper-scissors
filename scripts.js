@@ -13,6 +13,10 @@ const compScoreDisplay = document.createElement('h3');
 const roundTracker = document.createElement('h3');
 const scoreContainer = document.createElement('div');
 
+const retryButton = document.createElement('button');
+retryButton.setAttribute('class', 'button');
+retryButton.textContent = 'Retry';
+
 let rounds = 0;
 let currentRound = 0;
 let playerScore = 0;
@@ -32,18 +36,26 @@ buttonContainer.appendChild(rockButton);
 buttonContainer.appendChild(paperButton);
 buttonContainer.appendChild(scissorsButton);
 
+function retry() {
+    gameArea.removeChild(scoreContainer);
+    gameArea.removeChild(retryButton);
+    textOutput.textContent = "How many rounds would you like to play?";
+    gameArea.appendChild(textInput);
+    gameArea.appendChild(startGame);
+}
 
-paperButton.addEventListener('click', (e) => {
-    playChoice(e)
-});
-
-rockButton.addEventListener('click', (e) => {
-    playChoice(e)
-});
-
-scissorsButton.addEventListener('click', (e) => {
-    playChoice(e)
-});
+function endGame() {
+    gameArea.removeChild(roundTracker);
+    gameArea.removeChild(buttonContainer);
+    gameArea.appendChild(retryButton);
+    if(computerScore > playerScore) {
+        textOutput.textContent = `Sorry you lose, would you like to try again?`;
+    } else if(playerScore > computerScore) {
+        textOutput.textContent = `You win! You can play again if you want to test your luck...`;
+    } else {
+        textOutput.textContent = "You both tied...Try again?";
+    }
+}
 
 function updateUI() {
     roundTracker.textContent = `Round: ${currentRound} / ${rounds}`;
@@ -61,12 +73,6 @@ function computerPlay() {
         case 3:
             return "Scissors";
     }
-}
-
-function capitalize(string) {
-    lowerString = string.toLowerCase();
-    outString = lowerString[0].toUpperCase() + lowerString.slice(1);
-    return outString;
 }
 
 function playRound(computerSelection, playerSelection) {
@@ -118,6 +124,7 @@ function playChoice(e) {
         currentRound++;
         updateUI();
     } else {
+        updateUI();
         endGame();
     }
 }
@@ -145,38 +152,18 @@ startGame.addEventListener('click', () => {
     prepareGame(); 
 });
 
-function game() {
-    let options = ["rock", "paper", "scissors"];
-    let user_in;
-    let computerScore = 0;
-    let playerScore = 0;
-    for(let i = 0; i < 5; i++) {
-        let computerSelection = computerPlay();
-        while(true){
-            user_in = prompt("Please enter Rock, Paper, or Scissors:");
-            if(options.indexOf(user_in.toLowerCase()) == -1) {
-                alert("Sorry that is incorrect, try again.");
-                continue;
-            } else {
-                break;
-            }
-        }
-        let result = playRound(computerSelection, user_in);
-        if(result == "lose") {
-            computerScore++;
-            alert(`You lose! ${computerSelection} beats ${capitalize(user_in)}`);
-        } else if(result == "win") {
-            playerScore++;
-            alert(`You win! ${capitalize(user_in)} beats ${computerSelection}`);
-        } else {
-            alert(`No one wins, you both choose ${computerSelection}`);
-        }
-    }
-    if(computerScore > playerScore) {
-        alert(`Sorry you lose, the computer got a score of ${computerScore} while you only had ${playerScore}`);
-    } else if(playerScore > computerScore) {
-        alert(`You win! With a score of ${playerScore} the computer only had ${computerScore}`)
-    } else {
-        alert("You both tied...")
-    }
-}
+paperButton.addEventListener('click', (e) => {
+    playChoice(e)
+});
+
+rockButton.addEventListener('click', (e) => {
+    playChoice(e)
+});
+
+scissorsButton.addEventListener('click', (e) => {
+    playChoice(e)
+});
+
+retryButton.addEventListener('click', () =>{
+    retry();
+});
